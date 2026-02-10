@@ -15,18 +15,17 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderLineService {
-
     private final ProductRepository productRepository;
     private final OrderLineRepository orderLineRepository;
 
     public List<OrderLine> createOrderLines(
-        Order order,
-        List<OrderLineRequest> orderLineRequests
-    ) {
+            Order order,
+            List<OrderLineRequest> request
+    ){
         List<OrderLine> orderLineList = new ArrayList<>();
-        for (OrderLineRequest olr : orderLineRequests) {
+        for (OrderLineRequest olr : request) {
             Product product = productRepository.findById(olr.getProductId())
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 상품은 주문할 수 없습니다 !"));
+                    .orElseThrow(() -> new RuntimeException("존재하지 않는 상품은 주문할 수 없습니다 !"));
 
             // 상품 구매 처리
             product.purchased(olr.getAmount());
